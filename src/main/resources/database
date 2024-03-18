@@ -1,0 +1,41 @@
+CREATE DATABASE cribbage;
+use cribbage;
+
+CREATE TABLE Users (
+    UserID int auto_increment,
+    Username varchar(30),
+    Password varchar(255),
+    Email varchar(255),
+    email_verify varchar(100),
+    date datetime,
+    PRIMARY KEY (UserID)
+);
+
+CREATE TABLE Games (
+    UserID int,
+    GameDate date,
+    Score int,
+    GameID int auto_increment,
+    result BOOLEAN,
+    PRIMARY KEY (GameID),
+    foreign key (UserID) references Users(UserID)
+);
+
+CREATE TABLE verify (
+    ID int auto_increment,
+    code int,
+    expires int,
+    email varchar(100),
+	PRIMARY KEY (ID)
+);
+CREATE UNIQUE INDEX email_index
+ON Users (Email);
+
+ALTER TABLE Users ADD Index(Username);
+
+ALTER TABLE verify ADD Index(code);
+ALTER TABLE verify ADD Index(expires);
+ALTER TABLE verify ADD Index(email);
+
+CREATE USER 'helen'@'localhost' IDENTIFIED BY '12345678';
+GRANT ALL PRIVILEGES ON cribbage.* TO 'helen'@'localhost'

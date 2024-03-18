@@ -1,0 +1,348 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Swagger volcano campsite
+  license:
+    name: MIT
+servers:
+  - url: 'http://capstone.swagger.io/api'
+paths:
+  /user:
+    get:
+      summary: get user info
+      operationId: getUser
+      tags:
+        - users
+      security:
+        - capstone_auth:
+            - 'read:api'
+      parameters:
+        - name: email
+          in: query
+          description: start data search
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: end data search
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An paged array of pets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+    post:
+      summary: Create User for capstone
+      operationId: createUser
+      requestBody:
+        description: Create User for capstone
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      tags:
+        - users
+      security:
+        - capstone_auth:
+            - 'read:api'
+            - 'write:api'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /user/{email}:
+    put:
+      summary: update User info
+      operationId: updateUserInfo
+      tags:
+        - users
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: The email of the user
+          schema:
+            type: string
+      requestBody:
+        description: user information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      security:
+        - capstone_auth:
+            - 'read:api'
+            - 'write:api'
+      responses:
+        '200':
+          description: An paged array of pets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+    delete:
+      summary: delete User
+      operationId: deleteUser
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: The id of the User
+          schema:
+            type: string
+      tags:
+        - users
+      security:
+        - capstone_auth:
+            - 'read:api'
+            - 'write:api'
+      responses:
+        '200':
+          description: Expected response to a valid request
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /user/verify:
+    post:
+      summary: verify User for capstone
+      operationId: verifyUser
+      requestBody:
+        description: verify User for capstone
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Verifier'
+      tags:
+        - users
+      security:
+        - capstone_auth:
+            - 'read:api'
+            - 'write:api'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /game:
+    post:
+      summary: Create game for capstone
+      operationId: createGame
+      requestBody:
+        description: Create Game for capstone
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+      tags:
+        - games
+      security:
+        - capstone_auth:
+            - 'read:api'
+            - 'write:api'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+
+  /game/{gameId}:
+    put:
+      summary: update Game info
+      operationId: updateGameInfo
+      tags:
+        - games
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          description: The id of the user
+          schema:
+            type: string
+      requestBody:
+        description: user information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Game'
+      security:
+        - capstone_auth:
+            - 'read:api'
+            - 'write:api'
+      responses:
+        '200':
+          description: An paged array of pets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+  /games/{email}:
+    get:
+      summary: get ALL games for user
+      operationId: getAllGamesForUser
+      tags:
+        - games
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: The id of the user
+          schema:
+            type: string
+      security:
+        - capstone_auth:
+            - 'read:api'
+            - 'write:api'
+      responses:
+        '200':
+          description: An paged array of pets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    capstone_auth:
+      type: oauth2
+      description: This API uses OAuth 2 with the client credential grant flow.
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://localhost:6882/token'
+          scopes:
+            'write:api': modify api for capstone
+            'read:api': get capstone
+  schemas:
+    User:
+      type: object
+      required:
+        - email
+        - userName
+        - password
+      properties:
+        userId:
+          type: string
+        userName:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+          format: email
+        date:
+          type: string
+          format: date
+    Verifier:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: integer
+          format: int64
+    Game:
+      type: object
+      properties:
+        gameId:
+          type: string
+        userId:
+          type: string
+        result:
+          type: boolean
+        gameDate:
+          type: string
+          format: date
+        score:
+          type: integer
+          format: int64
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string

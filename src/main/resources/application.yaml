@@ -1,0 +1,40 @@
+logging:
+  level:
+    org.springframework: ERROR
+    com.example: DEBUG
+
+server:
+  port: 8082
+
+
+spring:
+  profiles:
+    active: dev
+  main:
+    banner-mode: off
+  application:
+    name: capstoneAPI
+  datasource:
+    url: jdbc:mysql://localhost:3306/cribbage
+    username: helen
+    password: 12345678
+    driverClassName: com.mysql.cj.jdbc.Driver
+
+
+email: haunt.hcm2015@gmail.com
+thread-pool: 10
+
+query:
+  verifyEmail: INSERT INTO verify(code,expires,email) VALUES(?, ?, ?);
+  getUserByEmail: SELECT UserID, Username, Email FROM Users WHERE Email=?;
+  getVerify: SELECT * FROM verify WHERE email=? AND code = ?;
+
+  insertUser: INSERT INTO Users(Username, Email, Password, date ) VALUES(?, ?, ?, current_date());
+  deleteUser: DELETE FROM Users WHERE UserID = ?;
+  updateUser: UPDATE Users SET password = ? WHERE email = ?;
+  updateUserVerify: UPDATE Users SET email_verify = ? WHERE UserID = ?;
+  getUser:  SELECT userId, Username, Password,Email, date FROM users WHERE email = ? and  password =?;
+
+  createGames: INSERT INTO Games(HostID, GameDate ) VALUES(?, current_date());
+  getGames: SELECT GameDate, Score, Result FROM Games WHERE GameID= ?;
+  updateGames: UPDATE Games SET guestid = ?, guestscore = ?, hostscore = ? WHERE gameid = ?;
